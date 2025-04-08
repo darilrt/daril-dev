@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Daril.dev</title>
+    <style>
+      body {
+        background-color: black;
+        color: limegreen;
+        font-family: monospace;
+        font-size: 15px;
+        padding: 1rem;
+      }
+
+      a {
+        color: cyan;
+        text-decoration: underline;
+      }
+
+      #cursor {
+        display: inline-block;
+        width: 10px;
+        background-color: limegreen;
+        margin-left: 5px;
+        animation: blink 1s step-start infinite;
+      }
+
+      @keyframes blink {
+        50% {
+          background-color: transparent;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content">
+      <h1>Hello, World!</h1>
+      <p>
+        I'm <strong>Daril Rodriguez</strong>, a passionate developer, system
+        architect, and technology enthusiast. <br />I thrive on building things
+        from the ground up, experimenting with game engines, compilers, and
+        low-level systems.<br />I have a deep passion for research and learning
+        across a wide range of fields, constantly seeking to expand my knowledge
+        and explore new ideas.
+      </p>
+
+      <p>Follow me on:</p>
+      <ul>
+        <li><a href="https://github.com/darilrt" target="_blank">GitHub</a></li>
+        <li>
+          <a
+            href="https://www.linkedin.com/in/daril-rodriguez-9610b698/"
+            target="_blank"
+            >LinkedIn</a
+          >
+        </li>
+      </ul>
+
+      <p>
+        Here are a few things I’ve built while learning and exploring new ideas:
+      </p>
+      <p>
+        🧠
+        <strong
+          ><a href="https://github.com/darilrt/ms-runtime" target="_blank"
+            >ms-runtime</a
+          ></strong
+        >
+        — A virtual machine written in <strong>Rust</strong> for a custom
+        programming language.<br />
+        Inspired by the JVM and Python's VM, it includes a built-in Lisp-style
+        assembler and focuses on safe, low-level execution.<br />
+        <a
+          href="https://github.com/darilrt/mintscript-rs/blob/master/examples/msa/count/count.msa"
+          target="_blank"
+          >See example code</a
+        >.
+      </p>
+      <p>
+        🛠️
+        <strong
+          ><a href="https://github.com/darilrt/amuse_ecs" target="_blank"
+            >amuse_ecs</a
+          ></strong
+        >
+        — A minimal <strong>Entity-Component-System</strong> implementation in
+        <strong>C++</strong>, built as a learning project.<br />
+        It explores data-oriented design, cache-friendly archetypes, and game
+        engine architecture.
+      </p>
+      <p>
+        🧪
+        <strong
+          ><a href="https://github.com/darilrt/amuse_utest" target="_blank"
+            >amuse_utest</a
+          ></strong
+        >
+        — A lightweight <strong>unit testing framework</strong> for
+        <strong>C++</strong>, built to support the
+        <code>amuse_ecs</code> project.<br />
+        Created as a learning tool to explore testing frameworks and improve
+        code reliability in low-level systems.
+      </p>
+      <p>
+        🧮
+        <strong
+          ><a href="https://github.com/darilrt/rays" target="_blank"
+            >rays</a
+          ></strong
+        >
+        — A basic <strong>ray casting</strong> implementation in
+        <strong>C++</strong>, built as an early learning project.<br />
+        It explores the core math behind 3D rendering — including projection,
+        ray-object intersection, and the rendering pipeline.
+      </p>
+      <p>
+        🛠️
+        <strong
+          ><a href="https://github.com/darilrt/cic" target="_blank"
+            >cic</a
+          ></strong
+        >
+        — A simple <strong>transpiler</strong> that converts a custom
+        experimental syntax to <strong>C++</strong>.<br />
+        This project explores the parsing and compilation process, as well as
+        the challenge of self-hosting a compiler.
+      </p>
+    </div>
+    <span id="cursor"></span>
+
+    <script>
+      const chars =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:',.<>?";
+
+      function getRandomChar() {
+        return chars[Math.floor(Math.random() * chars.length)];
+      }
+
+      function animateTextNode(node) {
+        const originalText = node.textContent;
+        let current = originalText
+          .split("")
+          .map((c) => (c === " " ? " " : getRandomChar()));
+        let indices = originalText
+          .split("")
+          .map((c, i) => (c !== " " ? i : null))
+          .filter((i) => i !== null);
+
+        function update() {
+          node.textContent = current.join("");
+
+          for (let i of indices) {
+            if (current[i] !== originalText[i]) {
+              current[i] = getRandomChar();
+            }
+          }
+
+          if (indices.length > 0) {
+            const rand = Math.floor(Math.random() * indices.length);
+            const fixAt = indices[rand];
+            current[fixAt] = originalText[fixAt];
+            indices.splice(rand, 1);
+            setTimeout(update, 40);
+          }
+        }
+
+        update();
+      }
+
+      function animateAllTextNodes(element) {
+        const treeWalker = document.createTreeWalker(
+          element,
+          NodeFilter.SHOW_TEXT,
+          {
+            acceptNode: function (node) {
+              return node.textContent.trim()
+                ? NodeFilter.FILTER_ACCEPT
+                : NodeFilter.FILTER_SKIP;
+            },
+          }
+        );
+
+        let textNode;
+        while ((textNode = treeWalker.nextNode())) {
+          animateTextNode(textNode);
+        }
+      }
+
+      const content = document.getElementById("content");
+      animateAllTextNodes(content);
+    </script>
+  </body>
+</html>
